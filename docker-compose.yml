@@ -4,6 +4,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
+      POSTGRES_DB: MovieReviews
     volumes:
       - pgdata:/var/lib/postgresql
     ports:
@@ -16,6 +17,19 @@ services:
       PGADMIN_DEFAULT_PASSWORD: password
     ports:
       - '9001:80'
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: final
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - ConnectionStrings__MovieReviewsDbConnectionString=Host=db;Port=5432;Database=MovieReviews;UserName=postgres;Password=password
+    
 
 volumes:
   pgdata:
