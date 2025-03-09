@@ -4,7 +4,7 @@
 * [Setup](#Setup)
 * [Database](#Database)
 * [API Documentation](#API-Documentation)
-* [Possible extentions](#Possible-extensions)
+* [Possible extensions](#Possible-extensions)
 
 ## About the project
 Simple REST API to manage movie reviews.
@@ -37,7 +37,7 @@ Connecting to database with pgAdmin in given docker-compose.yml:
 The full API documentation is available via Swagger.  
 After running the project, open:
  **[http://localhost:8080/api/docs](http://localhost:8080/api/docs)**
-## Possible extentions
+## Possible extensions
 * Filtering and sorting reviews
 * Actors and reviews o their roles in movies
 * JWT refresh
