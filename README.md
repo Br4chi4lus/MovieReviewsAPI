@@ -3,6 +3,7 @@
 * [Technologies](#Technologies)
 * [Setup](#Setup)
 * [Database](#Database)
+* [API Documentation](#API-Documentation)
 
 ## About the project
 Simple REST API to manage movie reviews.
