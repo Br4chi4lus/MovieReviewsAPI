@@ -16,7 +16,7 @@ namespace MovieReviewsAPI.Models
         /// What is the movie about
         /// </summary>
         /// <example>Some description</example>
-        public string Description { get; set; }
+        public string? Description { get; set; }
         /// <summary>
         /// 
         /// </summary>

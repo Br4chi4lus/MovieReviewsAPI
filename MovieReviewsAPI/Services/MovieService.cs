@@ -99,6 +99,17 @@ namespace MovieReviewsAPI.Services
             var movieDto = _mapper.Map<MovieDto>(movie);
             return movieDto;
         }
+        public async Task DeleteMovie(int id)
+        {
+            var movie = await _dbContext.Movie
+                .FirstOrDefaultAsync (m => m.Id == id);
+
+            if (movie is null)
+                throw new NotFoundException("Movie with given id was not found");
+
+            _dbContext.Movie.Remove(movie);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 
     public interface IMovieService
@@ -107,5 +118,6 @@ namespace MovieReviewsAPI.Services
         Task<IEnumerable<MovieDto>> GetAll();
         Task<MovieDto> GetById(int id);
         Task<MovieDto> UpdateDateOfPremiere(int id, UpdateDateOfPremiereDto dto);
+        Task DeleteMovie(int id);
     }
 }
