@@ -12,6 +12,7 @@ Simple REST API to manage movie reviews.
 * ASP .NET Core 8
 * Entity Framework
 * Docker
+* xUnit, Moq, Fluent Assertions
 ## Setup
 Clone this repository:
 ```
