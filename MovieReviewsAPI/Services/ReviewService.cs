@@ -24,11 +24,16 @@ namespace MovieReviewsAPI.Services
         }
 
         public async Task<ReviewDto> CreateReview(int movieId, CreateReviewDto dto)
-        {
+        {            
             var review = _mapper.Map<Review>(dto);
             var userId = _userContextService.GetUserId;
             if (userId is null)
                 throw new UnauthorizedException("You are not logged in");
+
+            var movie = await _dbContext.Movie.FirstOrDefaultAsync(r => r.Id == movieId);
+            if (movie is null)
+                throw new NotFoundException("Movie with given id was not found");
+
             review.UserId = (int)userId;
             review.MovieId = movieId;
             var date = DateTime.Now.ToUniversalTime();
@@ -95,7 +100,7 @@ namespace MovieReviewsAPI.Services
             var user = _userContextService.User;
             if (user is null)
                 throw new UnauthorizedException("You are not logged in");
-            var authorizationResult = _authorizationService.AuthorizeAsync(user, review, new ResourceOperationRequirement(ResourceOperation.Update)).Result;
+            var authorizationResult = _authorizationService.AuthorizeAsync(user, review, new ResourceOperationRequirement(ResourceOperation.Delete)).Result;
 
             if (!authorizationResult.Succeeded)
                 throw new ForbidenException();

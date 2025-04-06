@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieReviewsAPI.Models;
 using MovieReviewsAPI.Services;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace MovieReviewsAPI.Controllers
 {
@@ -102,6 +103,29 @@ namespace MovieReviewsAPI.Controllers
             var movie = await _movieService.UpdateDateOfPremiere(movieId, dto);
 
             return Ok(movie);
+        }
+
+        /// <summary>
+        /// Update date of premiere
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// Sample request:
+        /// 
+        ///     Delete /api/movies/{movieId}
+        /// 
+        /// </remarks>
+        /// <param name="movieId">Id of the movie</param>
+        /// <response code="204">No Content, movie deleted succesfully</response>
+        /// <response code="401">Not authorized</response>
+        /// <response code="404">Movie with given Id does not exist</response>
+        /// <returns></returns>
+        [HttpDelete("{movieId}")]
+        [Authorize(Roles = "Admin,Moderator")]
+        public async Task<IActionResult> DeleteMovie([FromRoute] int movieId)
+        {
+            await _movieService.DeleteMovie(movieId);
+            return NoContent();
         }
     }
 }
