@@ -27,7 +27,8 @@ namespace MovieReviewsAPI.Models.Validators
                 .MaximumLength(64);
 
             RuleFor(u => u.PasswordConfirm)
-                .Equal(x => x.Password);
+                .Equal(x => x.Password)
+                .WithMessage("Passwords must match!");
 
             RuleFor(u => u.UserName)
                 .NotEmpty()

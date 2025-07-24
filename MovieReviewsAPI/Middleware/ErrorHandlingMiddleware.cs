@@ -1,4 +1,5 @@
 ﻿using MovieReviewsAPI.Exceptions;
+using System.Text.Json;
 
 namespace MovieReviewsAPI.Middleware
 {
@@ -17,17 +18,23 @@ namespace MovieReviewsAPI.Middleware
             catch (BadRequestException ex)
             {
                 context.Response.StatusCode = 400;
-                await context.Response.WriteAsync(ex.Message);
+                context.Response.ContentType = "application/json";
+                var result = JsonSerializer.Serialize(new { message = ex.Message });
+                await context.Response.WriteAsync(result);
             }
             catch (NotFoundException ex)
             {
                 context.Response.StatusCode = 404;
-                await context.Response.WriteAsync(ex.Message);
+                context.Response.ContentType = "application/json";
+                var result = JsonSerializer.Serialize(new { message = ex.Message });
+                await context.Response.WriteAsync(result);
             }
             catch (UnauthorizedException ex)
             {
                 context.Response.StatusCode = 401;
-                await context.Response.WriteAsync(ex.Message);
+                context.Response.ContentType = "application/json";
+                var result = JsonSerializer.Serialize(new { message = ex.Message });
+                await context.Response.WriteAsync(result);
             }
             catch (ForbidenException ex)
             {

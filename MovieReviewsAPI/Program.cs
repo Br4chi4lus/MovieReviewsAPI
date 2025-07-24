@@ -86,7 +86,15 @@ builder.Services.AddSwaggerGen(options =>
 });
 builder.Services.AddSingleton(authenticationSettings);
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Frontend", builder =>
+        builder.AllowAnyMethod()
+        .AllowAnyHeader()
+        .WithOrigins("http://localhost:5173"));
+});
 var app = builder.Build();
+app.UseCors("Frontend");
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
