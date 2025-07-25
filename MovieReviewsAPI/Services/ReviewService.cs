@@ -51,20 +51,27 @@ namespace MovieReviewsAPI.Services
             return reviewDto;
         }
 
-        public async Task<IEnumerable<ReviewDto>> GetAllReviews(int movieId)
+        public async Task<PagedResult<ReviewDto>> GetAllReviews(int movieId, PaginationQuery reviewQuery)
         {
             var movie = await _dbContext.Movie.FirstOrDefaultAsync(r => r.Id == movieId);
             if (movie is null)
                 throw new NotFoundException("Movie with given id was not found");
 
-            var reviews = await _dbContext.Review
+            var baseQuery = _dbContext.Review
                 .Include(r => r.Author)
-                .Where(r => r.MovieId == movieId)
+                .Where(r => r.MovieId == movieId);
+
+            var reviews = await baseQuery
+                .Skip(reviewQuery.PageSize * (reviewQuery.PageNumber - 1))
+                .Take(reviewQuery.PageSize)
                 .ToListAsync();
 
-            var reviewDtos = _mapper.Map<List<ReviewDto>>(reviews);
+            var totalReviewsCount = baseQuery.Count();
 
-            return reviewDtos;
+            var reviewDtos = _mapper.Map<List<ReviewDto>>(reviews);
+            var result = new PagedResult<ReviewDto>(reviewDtos, totalReviewsCount, reviewQuery.PageNumber, reviewQuery.PageSize);
+
+            return result;
         }
 
         public async Task<ReviewDto> UpdateReviewContent(int id, UpdateReviewContentDto dto)
@@ -113,7 +120,7 @@ namespace MovieReviewsAPI.Services
     public interface IReviewService
     {
         Task<ReviewDto> CreateReview(int movieId, CreateReviewDto dto);
-        Task<IEnumerable<ReviewDto>> GetAllReviews(int movieId);
+        Task<PagedResult<ReviewDto>> GetAllReviews(int movieId, PaginationQuery reviewQuery);
         Task<ReviewDto> UpdateReviewContent(int id, UpdateReviewContentDto dto);
         Task DeleteReview(int id);
     }

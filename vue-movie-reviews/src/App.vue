@@ -54,6 +54,7 @@ nav a {
   background: none;
   border: none;
   padding: 0;
+  cursor: pointer;
   font-size: 14px;
   text-align: center;
   margin-top: 2rem;

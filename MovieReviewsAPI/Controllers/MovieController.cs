@@ -50,14 +50,20 @@ namespace MovieReviewsAPI.Controllers
         /// <summary>
         /// Get all movies in database
         /// </summary>
-        /// <response code="200">Returns array of movies</response>
+        /// <response code="200">
+        ///     Returns array of movies with given length
+        ///     Number of total pages
+        ///     Number of total movies in DB
+        ///     Index of first element(starting with 1)
+        ///     Index of last element
+        /// </response>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetAllMovies()
+        public async Task<IActionResult> GetAllMovies([FromQuery] PaginationQuery movieQuery)
         {
-            var movies = await _movieService.GetAll();
+            var result = await _movieService.GetAll(movieQuery);
 
-            return Ok(movies);
+            return Ok(result);
         }
 
         /// <summary>

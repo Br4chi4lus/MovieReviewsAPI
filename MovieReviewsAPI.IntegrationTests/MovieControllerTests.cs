@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Text;
 using Microsoft.AspNetCore.Authorization.Policy;
 using MovieReviewsAPI.IntegrationTests.Helpers;
+using Microsoft.AspNetCore.WebUtilities;
 namespace MovieReviewsAPI.IntegrationTests
 {
     public class MovieControllerTests : IClassFixture<WebApplicationFactory<Program>>
@@ -36,11 +37,35 @@ namespace MovieReviewsAPI.IntegrationTests
         [Fact]
         public async Task GetAllMovies_ReturnsOkResult()
         {
-            // Act
+            // Arrange
             _factory.ClearDatabase();
-            var result = await _client.GetAsync("/api/movies");
+            var url = QueryHelpers.AddQueryString("/api/movies", new Dictionary<string, string?>
+            {
+                ["PageNumber"] = "1",
+                ["PageSize"] = "10"
+            });
+            // Act
+            var result = await _client.GetAsync(url);
             // Assert
             result.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task GetAllMovies_WithInvalidQueryValues_ReturnsBadRequest()
+        {
+            // Arrange
+            _factory.ClearDatabase();
+            var url = QueryHelpers.AddQueryString("/api/movies", new Dictionary<string, string?>
+            {
+                ["PageNumber"] = "1",
+                ["PageSize"] = "11"
+            });
+
+            // Act
+            var result = await _client.GetAsync(url);
+
+            // Assert
+            result.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
         }
 
         [Fact]

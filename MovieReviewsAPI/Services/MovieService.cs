@@ -44,9 +44,9 @@ namespace MovieReviewsAPI.Services
             return movie.Id;
         }
 
-        public async Task<IEnumerable<MovieDto>> GetAll()
+        public async Task<PagedResult<MovieDto>> GetAll(PaginationQuery movieQuery)
         {
-            var movies = await _dbContext.Movie
+            var baseQuery = _dbContext.Movie
                 .Include(m => m.Director)
                 .Select(m => new MovieDto
                 {
@@ -57,10 +57,17 @@ namespace MovieReviewsAPI.Services
                     Director = m.Director.FirstName + " " + m.Director.LastName,
                     AverageRating = m.Reviews.Average(r => (double?)r.Rating) ?? 0,
                 })
+                .Where(m => movieQuery.SearchPhase == null || (m.Title.ToLower().Contains(movieQuery.SearchPhase.ToLower())));
+            var movies = await baseQuery
+                .Skip(movieQuery.PageSize * (movieQuery.PageNumber - 1))
+                .Take(movieQuery.PageSize)
                 .ToListAsync();
 
+            var totalMoviesCount = baseQuery.Count();
 
-            return movies;
+            var result = new PagedResult<MovieDto>(movies, totalMoviesCount, movieQuery.PageNumber, movieQuery.PageSize);
+
+            return result;
         }
 
         public async Task<MovieDto> GetById(int id)
@@ -115,7 +122,7 @@ namespace MovieReviewsAPI.Services
     public interface IMovieService
     {
         Task<int> CreateMovie(CreateMovieDto dto);
-        Task<IEnumerable<MovieDto>> GetAll();
+        Task<PagedResult<MovieDto>> GetAll(PaginationQuery movieQuery);
         Task<MovieDto> GetById(int id);
         Task<MovieDto> UpdateDateOfPremiere(int id, UpdateDateOfPremiereDto dto);
         Task DeleteMovie(int id);
