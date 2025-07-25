@@ -41,9 +41,9 @@ namespace MovieReviewsAPI.Controllers
         /// <response code="404">Movie with given Id does not exist</response>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetAllReviews([FromRoute] int movieId)
+        public async Task<IActionResult> GetAllReviews([FromRoute] int movieId, [FromQuery] PaginationQuery reviewQuery)
         {
-            var reviews = await _reviewService.GetAllReviews(movieId);
+            var reviews = await _reviewService.GetAllReviews(movieId, reviewQuery);
 
             return Ok(reviews);
         }

@@ -32,6 +32,7 @@ builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
 builder.Services.AddScoped<IValidator<CreateReviewDto>, CreateReviewDtoValidator>();
+builder.Services.AddScoped<IValidator<PaginationQuery>, PaginationQueryValidator>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();

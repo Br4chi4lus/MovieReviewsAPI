@@ -2,8 +2,8 @@
 import type { CreateReviewDto } from '@/dtos/create.review.dto.ts';
 import { ref } from 'vue';
 import api from '@/axios.ts';
-import { isAxiosError } from 'axios'
-import router from '@/router'
+import { isAxiosError } from 'axios';
+import router from '@/router';
 
 const props = defineProps<{
   id: number;

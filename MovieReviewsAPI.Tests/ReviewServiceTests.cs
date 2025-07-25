@@ -60,9 +60,14 @@ namespace MovieReviewsAPI.Tests
             // Arrange
             var (dbContext, automapper, userContextService, authorizationServiceMock) = this.SetupTestEnvironment(1, "User");
             var reviewService = new ReviewService(dbContext, automapper, userContextService, authorizationServiceMock.Object);
+            var paginationQuery = new PaginationQuery()
+            {
+                PageSize = 10,
+                PageNumber = 1
+            };
             
             // Act + Assert
-            await reviewService.Invoking(s => s.GetAllReviews(1)).Should().ThrowAsync<NotFoundException>();
+            await reviewService.Invoking(s => s.GetAllReviews(1, paginationQuery)).Should().ThrowAsync<NotFoundException>();
         }
 
         [Fact]
@@ -104,25 +109,32 @@ namespace MovieReviewsAPI.Tests
             });
             await dbContext.SaveChangesAsync();
 
+            var paginationQuery = new PaginationQuery()
+            {
+                PageSize = 10,
+                PageNumber = 1
+            };
+
             // Act
-            var result = await reviewService.GetAllReviews(1);
+            var result = await reviewService.GetAllReviews(1, paginationQuery);
 
             // Assert        
-            result.Should().HaveCount(2);
-            var firstReview = result.ElementAt(0);
+            result.Items.Should().HaveCount(2);
+            var firstReview = result.Items.ElementAt(0);
             firstReview.Id.Should().Be(1);
             firstReview.Rating.Should().Be(5);
             firstReview.Content.Should().Be("Content");
             firstReview.DateOfCreation.Should().Be(date);
             firstReview.DateOfLastModification.Should().Be(date);
             firstReview.UserName.Should().Be("user1");
-            var secondReview = result.ElementAt(1);
+            var secondReview = result.Items.ElementAt(1);
             secondReview.Id.Should().Be(2);
             secondReview.Rating.Should().Be(6);
             secondReview.Content.Should().Be("Content1");
             secondReview.DateOfCreation.Should().Be(date);
             secondReview.DateOfLastModification.Should().Be(date);
             secondReview.UserName.Should().Be("user12");
+            result.TotalItemsCount.Should().Be(2);
         }
 
         [Fact]
