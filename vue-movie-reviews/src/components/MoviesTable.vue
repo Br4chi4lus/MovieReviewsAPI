@@ -9,6 +9,8 @@ import PaginationControls from '@/components/PaginationControls.vue';
 import { usePagination } from '@/composables/usePagination.ts';
 import { AuthService } from '@/services/auth.service.ts'
 import api from '@/axios.ts'
+import router from '@/router'
+import { formatDate } from '@/utils.ts'
 
 const movies = ref<MovieDto[]>([]);
 const loading = ref<boolean>(true);
@@ -57,12 +59,16 @@ onMounted(async () => {
 </script>
 
 <template>
+  <div>
+  <label for="newMovie">Create new movie entry:</label>
+  <button v-if="AuthService.isModOrAdmin()" id="newMovie" @click="router.push(`/movies/create`)">+</button>
+  </div>
   <div v-for="movie in movies" :key="movie.id">
     <router-link :to="`/movies/${movie.id}`">
       <MovieItem
         :title="movie.title"
         :director="movie.director"
-        :dateOfPremiere="movie.dateOfPremiere.toString().split('T')[0]"
+        :dateOfPremiere="formatDate(movie.dateOfPremiere)"
       />
     </router-link>
     <div>

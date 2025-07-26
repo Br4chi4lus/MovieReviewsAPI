@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
 import router from '@/router/index.ts';
+import LogoutButton from '@/components/auth/LogoutButton.vue'
+import { isAuthenticated, userIsModOrAdmin } from '@/components/auth/auth.ts'
 </script>
 
 <template>
   <header>
     <div class="wrapper">
       <nav>
-        <RouterLink to="/login">Login</RouterLink>
-        <RouterLink to="/register">Register</RouterLink>
+        <RouterLink v-if="!isAuthenticated" to="/login">Login</RouterLink>
+        <RouterLink v-if="!isAuthenticated" to="/register">Register</RouterLink>
         <RouterLink to="/movies">About</RouterLink>
+        <RouterLink v-if="userIsModOrAdmin" to="/movies/create">Create movie entry</RouterLink>
         <button class="nav-button" @click="router.back()">Back</button>
+        <LogoutButton v-if="isAuthenticated" />
       </nav>
     </div>
   </header>

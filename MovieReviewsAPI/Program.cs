@@ -92,6 +92,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("Frontend", builder =>
         builder.AllowAnyMethod()
         .AllowAnyHeader()
+        .WithExposedHeaders("Location")
         .WithOrigins("http://localhost:5173"));
 });
 var app = builder.Build();

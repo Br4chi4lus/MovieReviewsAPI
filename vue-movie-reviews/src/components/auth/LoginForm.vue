@@ -4,6 +4,8 @@ import type { LoginDto } from '@/dtos/login.dto.ts';
 import { ref } from 'vue';
 import router from '@/router';
 import api from '@/axios.ts';
+import { isAuthenticated, userIsModOrAdmin } from '@/components/auth/auth.ts'
+import { AuthService } from '@/services/auth.service.ts'
 
 const loginDto = ref<LoginDto>({ email: '', password: '' });
 const error = ref<string | null>(null);
@@ -18,6 +20,8 @@ async function onSubmit() {
   try {
     const response = await api.post<string>('account/login', loginDto.value);
     localStorage.setItem('token', response.data);
+    isAuthenticated.value = !AuthService.verifyTokenIsExpired();
+    userIsModOrAdmin.value = AuthService.isModOrAdmin();
     router.push('/movies');
   } catch (err) {
     if (isAxiosError(err)) {
