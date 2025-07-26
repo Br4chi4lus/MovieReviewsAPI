@@ -37,6 +37,8 @@ export class AuthService {
   }
 
   static isModOrAdmin(): boolean {
+    if (AuthService.verifyTokenIsExpired()) return false;
+
     const role = AuthService.getUserRole();
     if (!role) return false;
 
