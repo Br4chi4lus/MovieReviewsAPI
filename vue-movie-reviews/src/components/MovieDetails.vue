@@ -6,7 +6,7 @@ import { useMoviesStore } from '@/stores/movies.ts';
 import { onMounted, ref } from 'vue';
 import api from '@/axios.ts';
 import type { MovieDto } from '@/dtos/movie.dto.ts';
-import { formatDate } from '../utils.ts'
+import { formatDate } from '../utils.ts';
 
 const route = useRoute();
 const id = Number(route.params.id);

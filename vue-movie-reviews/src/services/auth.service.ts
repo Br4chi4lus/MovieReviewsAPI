@@ -20,7 +20,7 @@ export class AuthService {
 
     if (!token) return null;
 
-    try{
+    try {
       const payloadBase64 = token.split('.')[1];
       const decoded = JSON.parse(atob(payloadBase64));
       return decoded;

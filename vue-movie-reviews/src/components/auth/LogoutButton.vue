@@ -1,13 +1,13 @@
 <script setup lang="ts">
-  import router from '@/router'
-  import { isAuthenticated, userIsModOrAdmin } from '@/components/auth/auth.ts'
+import router from '@/router';
+import { isAuthenticated, userIsModOrAdmin } from '@/components/auth/auth.ts';
 
-  function onClick() {
-    localStorage.removeItem('token');
-    isAuthenticated.value = false;
-    userIsModOrAdmin.value = false;
-    router.push('/login');
-  }
+function onClick() {
+  localStorage.removeItem('token');
+  isAuthenticated.value = false;
+  userIsModOrAdmin.value = false;
+  router.push('/login');
+}
 </script>
 
 <template>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import CreateMovie from '@/components/CreateMovieForm.vue';
+import EditMovieForm from '@/components/EditMovieForm.vue';
 </script>
 
 <template>
-  <CreateMovie />
+  <EditMovieForm />
 </template>
 
 <style scoped></style>
