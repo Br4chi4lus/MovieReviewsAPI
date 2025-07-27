@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { AuthService } from '@/services/auth.service.ts'
+import { AuthService } from '@/services/auth.service.ts';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,10 +14,9 @@ const router = createRouter({
       name: 'login',
       component: () => import('../views/LoginView.vue'),
       beforeEnter: (to, from, next) => {
-        if (!AuthService.verifyTokenIsExpired()){
+        if (!AuthService.verifyTokenIsExpired()) {
           next({ name: 'movies' });
-        }
-        else {
+        } else {
           next();
         }
       },
@@ -27,10 +26,9 @@ const router = createRouter({
       name: 'register',
       component: () => import('../views/RegisterView.vue'),
       beforeEnter: (to, from, next) => {
-        if (!AuthService.verifyTokenIsExpired()){
+        if (!AuthService.verifyTokenIsExpired()) {
           next({ name: 'movies' });
-        }
-        else {
+        } else {
           next();
         }
       },
@@ -41,21 +39,33 @@ const router = createRouter({
       component: () => import('../views/MovieDetailView.vue'),
     },
     {
+      path: '/movies/:id/edit',
+      name: 'editMovieDetails',
+      component: () => import('../views/EditMovieView.vue'),
+      beforeEnter: (to, from, next) => {
+        if (AuthService.verifyTokenIsExpired()) {
+          next({ name: 'login' });
+        } else if (!AuthService.isModOrAdmin()) {
+          next({ name: 'movies' });
+        } else {
+          next();
+        }
+      },
+    },
+    {
       path: '/movies/create',
       name: 'createMovie',
       component: () => import('../views/CreateMovieView.vue'),
-      beforeEnter: (to, from, next) =>{
-        if (AuthService.verifyTokenIsExpired()){
+      beforeEnter: (to, from, next) => {
+        if (AuthService.verifyTokenIsExpired()) {
           next({ name: 'login' });
-        }
-        else if (!AuthService.isModOrAdmin()) {
-          next({name: 'movies'});
-        }
-        else {
+        } else if (!AuthService.isModOrAdmin()) {
+          next({ name: 'movies' });
+        } else {
           next();
         }
-      }
-    }
+      },
+    },
   ],
 });
 

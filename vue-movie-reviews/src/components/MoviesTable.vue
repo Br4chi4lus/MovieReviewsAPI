@@ -7,10 +7,10 @@ import { useMoviesStore } from '@/stores/movies.ts';
 import type { PagedResult } from '@/dtos/paged.result.ts';
 import PaginationControls from '@/components/PaginationControls.vue';
 import { usePagination } from '@/composables/usePagination.ts';
-import { AuthService } from '@/services/auth.service.ts'
-import api from '@/axios.ts'
-import router from '@/router'
-import { formatDate } from '@/utils.ts'
+import { AuthService } from '@/services/auth.service.ts';
+import api from '@/axios.ts';
+import router from '@/router';
+import { formatDate } from '@/utils.ts';
 
 const movies = ref<MovieDto[]>([]);
 const loading = ref<boolean>(true);
@@ -36,11 +36,10 @@ async function fetchMovies(page: number, pageSize: number) {
 }
 
 async function deleteMovie(id: number) {
-  try{
+  try {
     const response = await api.delete('movies/' + id);
 
-    if (response.status === 204)
-      await fetchMovies(pageNumber.value, pageSize.value);
+    if (response.status === 204) await fetchMovies(pageNumber.value, pageSize.value);
   } catch (error) {
     console.log(error);
   }
@@ -60,8 +59,10 @@ onMounted(async () => {
 
 <template>
   <div>
-  <label for="newMovie">Create new movie entry:</label>
-  <button v-if="AuthService.isModOrAdmin()" id="newMovie" @click="router.push(`/movies/create`)">+</button>
+    <label for="newMovie">Create new movie entry:</label>
+    <button v-if="AuthService.isModOrAdmin()" id="newMovie" @click="router.push(`/movies/create`)">
+      +
+    </button>
   </div>
   <div v-for="movie in movies" :key="movie.id">
     <router-link :to="`/movies/${movie.id}`">
@@ -72,7 +73,9 @@ onMounted(async () => {
       />
     </router-link>
     <div>
-      <button v-if="AuthService.isModOrAdmin()" @click="deleteMovie(movie.id)" class="danger"> Delete</button>
+      <button v-if="AuthService.isModOrAdmin()" @click="deleteMovie(movie.id)" class="danger">
+        Delete
+      </button>
     </div>
   </div>
   <PaginationControls
@@ -85,15 +88,15 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-  a {
-    display: block;
-  }
+a {
+  display: block;
+}
 
-  .danger {
-    color: red;
-    font-weight: bold;
-    border: none;
-    background: none;
-    cursor: pointer;
-  }
+.danger {
+  color: red;
+  font-weight: bold;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
 </style>

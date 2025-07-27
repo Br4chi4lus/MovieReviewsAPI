@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
 import router from '@/router/index.ts';
-import LogoutButton from '@/components/auth/LogoutButton.vue'
-import { isAuthenticated, userIsModOrAdmin } from '@/components/auth/auth.ts'
+import LogoutButton from '@/components/auth/LogoutButton.vue';
+import { isAuthenticated, userIsModOrAdmin } from '@/components/auth/auth.ts';
 </script>
 
 <template>

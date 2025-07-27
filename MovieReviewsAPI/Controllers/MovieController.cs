@@ -91,7 +91,8 @@ namespace MovieReviewsAPI.Controllers
         /// 
         ///     PUT /api/movies/{movieId}
         ///     {
-        ///         "dateOfPremiere": "2023-01-11"
+        ///         "dateOfPremiere": "2023-01-11",
+        ///         "description": "Movie about..."
         ///     }
         /// 
         /// </remarks>
@@ -104,9 +105,9 @@ namespace MovieReviewsAPI.Controllers
         /// <returns></returns>
         [HttpPut("{movieId}")]
         [Authorize(Roles = "Admin,Moderator")]
-        public async Task<IActionResult> UpdateDateOfPremiere([FromRoute] int movieId, [FromBody] UpdateDateOfPremiereDto dto)
+        public async Task<IActionResult> UpdateMovie([FromRoute] int movieId, [FromBody] UpdateMovieDto dto)
         {
-            var movie = await _movieService.UpdateDateOfPremiere(movieId, dto);
+            var movie = await _movieService.UpdateMovie(movieId, dto);
 
             return Ok(movie);
         }

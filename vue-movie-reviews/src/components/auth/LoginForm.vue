@@ -4,8 +4,8 @@ import type { LoginDto } from '@/dtos/login.dto.ts';
 import { ref } from 'vue';
 import router from '@/router';
 import api from '@/axios.ts';
-import { isAuthenticated, userIsModOrAdmin } from '@/components/auth/auth.ts'
-import { AuthService } from '@/services/auth.service.ts'
+import { isAuthenticated, userIsModOrAdmin } from '@/components/auth/auth.ts';
+import { AuthService } from '@/services/auth.service.ts';
 
 const loginDto = ref<LoginDto>({ email: '', password: '' });
 const error = ref<string | null>(null);

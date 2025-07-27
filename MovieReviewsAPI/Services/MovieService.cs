@@ -91,7 +91,7 @@ namespace MovieReviewsAPI.Services
             return movie;
         }
 
-        public async Task<MovieDto> UpdateDateOfPremiere(int id, UpdateDateOfPremiereDto dto)
+        public async Task<MovieDto> UpdateMovie(int id, UpdateMovieDto dto)
         {
             var movie = await _dbContext.Movie
                 .Include(m => m.Director)
@@ -101,6 +101,7 @@ namespace MovieReviewsAPI.Services
                 throw new NotFoundException("Movie with given id was not found");
 
             movie.DateOfPremiere = dto.DateOfPremiere;
+            movie.Description = dto.Description;
             await _dbContext.SaveChangesAsync();
 
             var movieDto = _mapper.Map<MovieDto>(movie);
@@ -124,7 +125,7 @@ namespace MovieReviewsAPI.Services
         Task<int> CreateMovie(CreateMovieDto dto);
         Task<PagedResult<MovieDto>> GetAll(PaginationQuery movieQuery);
         Task<MovieDto> GetById(int id);
-        Task<MovieDto> UpdateDateOfPremiere(int id, UpdateDateOfPremiereDto dto);
+        Task<MovieDto> UpdateMovie(int id, UpdateMovieDto dto);
         Task DeleteMovie(int id);
     }
 }
